@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h1>
+            <i class="bi bi-server me-2"></i>
+            {{ server.name }}
+        </h1>
+
+        <p class="text-muted mb-0">
+            {{ server.role }}
+        </p>
+    </div>
+
+    <a href="/servers" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i>
+        Back
+    </a>
+
+</div>
+
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <table class="table">
+
+                    <tr>
+                        <th>Operating System</th>
+                        <td>{{ server.os }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Instance Type</th>
+                        <td>{{ server.instance_type }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Private IP</th>
+                        <td>{{ server.private_ip }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            <span class="badge bg-success">
+                                {{ server.status }}
+                            </span>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="card bg-light">
+
+                    <div class="card-body">
+
+                        <h5>Actions</h5>
+
+                        <div class="d-grid gap-2">
+
+                            <button class="btn btn-success">
+                                Connect SSH
+                            </button>
+
+                            <button class="btn btn-primary">
+                                Open Console
+                            </button>
+
+                            <button class="btn btn-warning">
+                                Restart
+                            </button>
+
+                            <button class="btn btn-danger">
+                                Stop
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
