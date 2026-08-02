@@ -2,6 +2,23 @@ from flask import Flask, render_template, request, redirect, url_for
 from services.aws_service import get_servers
 app = Flask(__name__)
 
+@app.route("/dashboard")
+def dashboard():
+
+    servers = get_servers()
+
+    stats = {
+        "projects": 2,
+        "servers": len(servers),
+        "pipelines": 0
+    }
+
+    return render_template(
+        "dashboard.html",
+        servers=servers,
+        stats=stats
+    )
+
 @app.route("/servers")
 def servers():
 

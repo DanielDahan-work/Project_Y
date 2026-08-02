@@ -1,49 +1,46 @@
+import boto3
+
+ec2 = boto3.client("ec2")
+
+
 def get_servers():
 
-    servers = [
+    servers = []
 
-{
-    "id": "i-08f2c1ab123456789",
-    "name": "PX-VPN-01",
-    "role": "WireGuard Gateway",
+    response = ec2.describe_instances()
 
-    "os": "Ubuntu Server 24.04 LTS",
+    for reservation in response["Reservations"]:
 
-    "instance_type": "t3.micro",
+        for instance in reservation["Instances"]:
 
-    "private_ip": "10.50.1.10",
+            name = "Unknown"
 
-    "public_ip": "18.194.120.15",
+            if "Tags" in instance:
 
-    "region": "eu-central-1",
+                for tag in instance["Tags"]:
 
-    "availability_zone": "eu-central-1a",
+                    if tag["Key"] == "Name":
+                        name = tag["Value"]
 
-    "security_group": "PX-VPN-SG",
+            servers.append({
 
-    "volume": "50 GB gp3",
+                "id": instance["InstanceId"],
 
-    "status": "running"
-},
+                "name": name,
 
-        {
-            "name": "PX-NAS-01",
-            "role": "Samba Storage",
-            "os": "Ubuntu 24.04",
-            "instance_type": "t3.micro",
-            "private_ip": "10.50.2.10",
-            "status": "Online"
-        },
+                "role": "AWS EC2",
 
-        {
-            "name": "PX-Jenkins-01",
-            "role": "CI/CD Server",
-            "os": "Ubuntu 24.04",
-            "instance_type": "t3.micro",
-            "private_ip": "10.50.3.10",
-            "status": "Online"
-        }
+                "os": "Ubuntu",
 
-    ]
+                "instance_type": instance["InstanceType"],
+
+                "private_ip": instance.get("PrivateIpAddress", "-"),
+
+                "status": instance["State"]["Name"].capitalize(),
+
+                "security_group": instance["SecurityGroups"][0]["GroupName"],
+
+                "launch_time": instance["LaunchTime"]
+            })
 
     return servers
