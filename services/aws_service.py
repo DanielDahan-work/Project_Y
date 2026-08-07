@@ -1,9 +1,13 @@
+import os
 import boto3
-
-ec2 = boto3.client("ec2")
 
 
 def get_servers():
+
+    ec2 = boto3.client(
+        "ec2",
+        region_name=os.getenv("AWS_REGION", "eu-central-1")
+    )
 
     servers = []
 
@@ -23,23 +27,14 @@ def get_servers():
                         name = tag["Value"]
 
             servers.append({
-
                 "id": instance["InstanceId"],
-
                 "name": name,
-
                 "role": "AWS EC2",
-
                 "os": "Ubuntu",
-
                 "instance_type": instance["InstanceType"],
-
                 "private_ip": instance.get("PrivateIpAddress", "-"),
-
                 "status": instance["State"]["Name"].capitalize(),
-
                 "security_group": instance["SecurityGroups"][0]["GroupName"],
-
                 "launch_time": instance["LaunchTime"]
             })
 
