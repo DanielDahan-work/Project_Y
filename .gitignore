@@ -1,7 +1,23 @@
+# Python
 venv/
 __pycache__/
 *.pyc
 
+# VS Code
 .vscode/
 
+# Environment
 .env
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Pytest
+.pytest_cache/
+
+# Coverage
+.coverage
+htmlcov/

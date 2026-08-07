@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+
+  web:
+    build: .
+    container_name: project-y-web
+
+    ports:
+      - "5000:5000"
+
+    env_file:
+      - .env
+
+    depends_on:
+      - postgres
+
+    restart: unless-stopped
+
+  postgres:
+
+    image: postgres:17
+
+    container_name: project-y-db
+
+    environment:
+      POSTGRES_DB: project_y
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    restart: unless-stopped
+
+volumes:
+
+  postgres_data:

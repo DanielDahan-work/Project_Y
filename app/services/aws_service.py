@@ -6,7 +6,7 @@ def get_servers():
 
     ec2 = boto3.client(
         "ec2",
-        region_name=os.getenv("AWS_REGION", "eu-central-1")
+        region_name="eu-central-1"
     )
 
     servers = []
