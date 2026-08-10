@@ -33,17 +33,30 @@ pipeline {
         }
 
         stage('Deploy') {
-            steps {
-                sh '''
-                    docker stop project-y || true
-                    docker rm project-y || true
+    steps {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'project-y-db',
+                usernameVariable: 'DB_USER',
+                passwordVariable: 'DB_PASSWORD'
+            )
+        ]) {
+            sh '''
+                docker stop project-y || true
+                docker rm project-y || true
 
-                    docker run -d \
-                        --name project-y \
-                        -p 5000:5000 \
-                        project-y:latest
-                '''
-            }
+                docker run -d \
+                    --name project-y \
+                    -p 5000:5000 \
+                    -e DB_HOST=10.50.2.10 \
+                    -e DB_PORT=5432 \
+                    -e DB_NAME=project_y \
+                    -e DB_USER="$DB_USER" \
+                    -e DB_PASSWORD="$DB_PASSWORD" \
+                    project-y:latest
+            '''
         }
+    }
+}
     }
 }
