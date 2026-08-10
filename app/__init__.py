@@ -2,19 +2,22 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from app.config import Config
-from app.routes import register_blueprints
 
 
 db = SQLAlchemy()
 
 
 def create_app():
+
     app = Flask(__name__)
 
     app.config.from_object(Config)
 
     db.init_app(app)
+
+    from app.routes import register_blueprints
     from app.models.user import User
+
     register_blueprints(app)
 
     return app
