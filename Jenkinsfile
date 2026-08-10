@@ -32,5 +32,18 @@ pipeline {
             }
         }
 
+        stage('Deploy') {
+            steps {
+                sh '''
+                    docker stop project-y || true
+                    docker rm project-y || true
+
+                    docker run -d \
+                        --name project-y \
+                        -p 5000:5000 \
+                        project-y:latest
+                '''
+            }
+        }
     }
 }
