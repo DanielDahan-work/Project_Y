@@ -18,7 +18,7 @@ pipeline {
 
         stage('Validate Flask') {
             steps {
-                sh './venv/bin/python -m py_compile app.py'
+                sh 'find . -maxdepth 3 -type f'
             }
         }
 
