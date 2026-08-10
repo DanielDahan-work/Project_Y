@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    options {
+        skipDefaultCheckout(true)
+    }
+
     stages {
 
         stage('Checkout') {
@@ -18,7 +22,7 @@ pipeline {
 
         stage('Validate Flask') {
             steps {
-                sh 'find . -maxdepth 3 -type f'
+                sh './venv/bin/python -m py_compile run.py'
             }
         }
 
