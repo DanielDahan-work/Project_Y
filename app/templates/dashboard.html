@@ -2,35 +2,47 @@
 
 {% block content %}
 
-<h1 class="mb-5">
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-    <i class="bi bi-speedometer2 me-2"></i>
+    <div>
+        <h1 class="fw-bold">
+            <i class="bi bi-speedometer2 me-2"></i>
+            Dashboard
+        </h1>
 
-    Dashboard
+        <p class="text-muted mb-0">
+            Project Y infrastructure overview
+        </p>
+    </div>
 
-</h1>
+</div>
 
-<div class="row g-4">
 
-    <div class="col-md-4">
+<!-- Statistics -->
 
-        <div class="card shadow-sm text-center">
+<div class="row g-4 mb-4">
+
+    <div class="col-md-3">
+
+        <div class="card shadow-sm h-100">
 
             <div class="card-body">
 
-                <i class="bi bi-folder-fill display-4 text-primary"></i>
+                <div class="d-flex justify-content-between">
 
-                <h2 class="mt-3">
+                    <div>
+                        <p class="text-muted mb-1">
+                            EC2 Servers
+                        </p>
 
-                    {{ stats.projects }}
+                        <h2 class="fw-bold">
+                            {{ stats.servers }}
+                        </h2>
+                    </div>
 
-                </h2>
+                    <i class="bi bi-server display-5 text-primary"></i>
 
-                <p class="text-muted">
-
-                    Projects
-
-                </p>
+                </div>
 
             </div>
 
@@ -38,25 +50,28 @@
 
     </div>
 
-    <div class="col-md-4">
 
-        <div class="card shadow-sm text-center">
+    <div class="col-md-3">
+
+        <div class="card shadow-sm h-100">
 
             <div class="card-body">
 
-                <i class="bi bi-server display-4 text-success"></i>
+                <div class="d-flex justify-content-between">
 
-                <h2 class="mt-3">
+                    <div>
+                        <p class="text-muted mb-1">
+                            Running
+                        </p>
 
-                    {{ stats.servers }}
+                        <h2 class="fw-bold text-success">
+                            {{ stats.running }}
+                        </h2>
+                    </div>
 
-                </h2>
+                    <i class="bi bi-play-circle display-5 text-success"></i>
 
-                <p class="text-muted">
-
-                    Servers
-
-                </p>
+                </div>
 
             </div>
 
@@ -64,25 +79,57 @@
 
     </div>
 
-    <div class="col-md-4">
 
-        <div class="card shadow-sm text-center">
+    <div class="col-md-3">
+
+        <div class="card shadow-sm h-100">
 
             <div class="card-body">
 
-                <i class="bi bi-gear-fill display-4 text-dark"></i>
+                <div class="d-flex justify-content-between">
 
-                <h2 class="mt-3">
+                    <div>
+                        <p class="text-muted mb-1">
+                            Stopped
+                        </p>
 
-                    {{ stats.pipelines }}
+                        <h2 class="fw-bold text-danger">
+                            {{ stats.stopped }}
+                        </h2>
+                    </div>
 
-                </h2>
+                    <i class="bi bi-stop-circle display-5 text-danger"></i>
 
-                <p class="text-muted">
+                </div>
 
-                    Pipelines
+            </div>
 
-                </p>
+        </div>
+
+    </div>
+
+
+    <div class="col-md-3">
+
+        <div class="card shadow-sm h-100">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+                        <p class="text-muted mb-1">
+                            Pipelines
+                        </p>
+
+                        <h2 class="fw-bold">
+                            {{ stats.pipelines }}
+                        </h2>
+                    </div>
+
+                    <i class="bi bi-gear-fill display-5 text-dark"></i>
+
+                </div>
 
             </div>
 
@@ -92,35 +139,122 @@
 
 </div>
 
-<hr class="my-5">
 
-<h3 class="mb-4">
+<!-- Infrastructure -->
 
-    Infrastructure Status
+<div class="card shadow-sm">
 
-</h3>
+    <div class="card-header bg-white">
 
-<div class="list-group">
+        <h5 class="mb-0">
+            <i class="bi bi-cloud me-2"></i>
+            AWS Infrastructure
+        </h5>
 
-{% for server in servers %}
+    </div>
 
-<div class="list-group-item d-flex justify-content-between">
 
-    <strong>
+    <div class="card-body p-0">
 
-        {{ server.name }}
+        <div class="table-responsive">
 
-    </strong>
+            <table class="table table-hover align-middle mb-0">
 
-    <span class="badge bg-success">
+                <thead class="table-light">
 
-        {{ server.status }}
+                    <tr>
 
-    </span>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Instance Type</th>
+                        <th>Private IP</th>
+                        <th>Security Group</th>
 
-</div>
+                    </tr>
 
-{% endfor %}
+                </thead>
+
+
+                <tbody>
+
+                    {% for server in servers %}
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+                                {{ server.name }}
+                            </strong>
+
+                            <div class="small text-muted">
+                                {{ server.id }}
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            {% if server.status == "Running" %}
+
+                                <span class="badge bg-success">
+                                    <i class="bi bi-circle-fill me-1"></i>
+                                    Running
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-danger">
+                                    {{ server.status }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+                            {{ server.instance_type }}
+                        </td>
+
+
+                        <td>
+                            <code>
+                                {{ server.private_ip }}
+                            </code>
+                        </td>
+
+
+                        <td>
+                            {{ server.security_group }}
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="5" class="text-center py-4">
+
+                            <i class="bi bi-exclamation-circle me-2"></i>
+
+                            No EC2 instances found.
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 
 </div>
 
