@@ -4,9 +4,11 @@ import boto3
 
 def get_servers():
 
+    region = os.getenv("AWS_REGION", "us-east-1")
+
     ec2 = boto3.client(
         "ec2",
-        region_name="eu-central-1"
+        region_name=region
     )
 
     servers = []
