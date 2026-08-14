@@ -53,6 +53,7 @@ pipeline {
                     -e DB_NAME=project_y \
                     -e DB_USER="$DB_USER" \
                     -e DB_PASSWORD="$DB_PASSWORD" \
+                    -e AWS_REGION=us-east-1 \
                     project-y:latest
             '''
         }
