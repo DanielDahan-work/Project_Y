@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import login_user, logout_user
+from sqlalchemy import func
 
 from app import db
 from app.models.user import User
@@ -16,7 +17,7 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter(func.lower(User.username) == username.lower()).first()
 
         if user and user.check_password(password):
             login_user(user)
