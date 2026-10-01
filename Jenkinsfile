@@ -46,6 +46,7 @@ pipeline {
                 docker rm project-y || true
 
                 docker run -d \
+                    --restart unless-stopped \
                     --name project-y \
                     -p 5000:5000 \
                     -e DB_HOST=10.50.2.10 \
