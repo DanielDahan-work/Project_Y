@@ -6,6 +6,40 @@ body {
     font-size: 1.4rem;
 }
 
+.hero-section {
+    position: relative;
+    display: grid;
+    min-height: 480px;
+    margin-bottom: 3rem;
+    padding: 4rem 1.5rem;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 1rem;
+    background:
+        linear-gradient(rgba(3, 15, 27, 0.5), rgba(3, 15, 27, 0.82)),
+        url("../images/hero-server-room.png") center / cover no-repeat;
+    box-shadow: 0 1rem 2.5rem rgba(3, 15, 27, 0.25);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
+}
+
+.hero-subtitle {
+    color: #a9f5ff;
+}
+
+@media (max-width: 767.98px) {
+    .hero-section {
+        min-height: 420px;
+        padding: 3rem 1rem;
+        background-position: center;
+    }
+}
+
 .card {
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
