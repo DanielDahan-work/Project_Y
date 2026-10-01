@@ -1,85 +1,78 @@
 {% extends "base.html" %}
 
+{% block body_class %}app-surface{% endblock %}
+
 {% block content %}
 
-<div class="col-md-5">
+<div class="auth-shell card border-0 mx-auto">
+    <div class="row g-0">
 
-```
-<div class="card shadow">
+        <div class="col-lg-6 auth-visual">
+            <div class="auth-visual-content">
+                <span class="auth-eyebrow">PROJECT Y</span>
+                <h1>Create your account</h1>
+                <p>
+                    Join the DevOps environment and explore cloud infrastructure,
+                    automation and CI/CD.
+                </p>
+            </div>
+        </div>
 
-    <div class="card-body">
+        <div class="col-lg-6 auth-form-panel">
+            <div class="auth-form-content">
 
-        <h2 class="text-center mb-4">
-            Register
-        </h2>
+                <h2 class="fw-bold mb-2">Sign up</h2>
+                <p class="text-muted mb-4">Create your Project Y account.</p>
 
-        <form action="/register" method="POST">
+                <form action="/register" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label" for="username">Username</label>
+                        <input
+                            id="username"
+                            type="text"
+                            name="username"
+                            class="form-control"
+                            autocomplete="username"
+                            required>
+                    </div>
 
-            <div class="mb-3">
+                    <div class="mb-3">
+                        <label class="form-label" for="email">Email</label>
+                        <input
+                            id="email"
+                            type="email"
+                            name="email"
+                            class="form-control"
+                            autocomplete="email"
+                            required>
+                    </div>
 
-                <label class="form-label">
-                    Username
-                </label>
+                    <div class="mb-4">
+                        <label class="form-label" for="password">Password</label>
+                        <input
+                            id="password"
+                            type="password"
+                            name="password"
+                            class="form-control"
+                            autocomplete="new-password"
+                            required>
+                    </div>
 
-                <input
-                    type="text"
-                    name="username"
-                    class="form-control"
-                    required>
+                    <button class="btn btn-primary btn-lg w-100" type="submit">
+                        Create account
+                        <i class="bi bi-arrow-right ms-1"></i>
+                    </button>
+                </form>
+
+                <p class="text-center text-muted mt-4 mb-0">
+                    Already have an account?
+                    <a href="/login" class="fw-semibold">Login</a>
+                </p>
 
             </div>
-
-            <div class="mb-3">
-
-                <label class="form-label">
-                    Email
-                </label>
-
-                <input
-                    type="email"
-                    name="email"
-                    class="form-control"
-                    required>
-
-            </div>
-
-            <div class="mb-3">
-
-                <label class="form-label">
-                    Password
-                </label>
-
-                <input
-                    type="password"
-                    name="password"
-                    class="form-control"
-                    required>
-
-            </div>
-
-            <button
-                class="btn btn-success w-100"
-                type="submit">
-
-                Register
-
-            </button>
-
-        </form>
-
-        <div class="text-center mt-3">
-
-            <a href="/login">
-                Already have an account? Login
-            </a>
-
         </div>
 
     </div>
-
-</div>
-```
-
 </div>
 
 {% endblock %}

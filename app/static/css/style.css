@@ -55,6 +55,89 @@ body.app-surface {
     color: #a9f5ff;
 }
 
+.auth-shell {
+    max-width: 980px;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    box-shadow: 0 1.5rem 3.5rem rgba(15, 42, 60, 0.2);
+}
+
+.auth-shell:hover {
+    transform: none;
+    box-shadow: 0 1.5rem 3.5rem rgba(15, 42, 60, 0.2);
+}
+
+.auth-visual {
+    position: relative;
+    display: flex;
+    min-height: 580px;
+    align-items: flex-end;
+    padding: 3rem;
+    color: #fff;
+    background:
+        linear-gradient(180deg, rgba(3, 15, 27, 0.12), rgba(3, 15, 27, 0.9)),
+        url("../images/hero-server-room.png") center / cover no-repeat;
+}
+
+.auth-visual-content {
+    position: relative;
+    z-index: 1;
+    max-width: 390px;
+}
+
+.auth-visual-content h1 {
+    color: #fff;
+    font-weight: 700;
+}
+
+.auth-visual-content p {
+    margin-bottom: 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.auth-eyebrow {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    color: #80f3ff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+}
+
+.auth-form-panel {
+    display: flex;
+    align-items: center;
+    padding: 3rem;
+    background-color: rgba(255, 255, 255, 0.97);
+}
+
+.auth-form-content {
+    width: 100%;
+    max-width: 390px;
+    margin: 0 auto;
+}
+
+.auth-form-content .form-control {
+    min-height: 48px;
+    border-color: #c9d8e2;
+}
+
+.auth-form-content .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+}
+
+@media (max-width: 991.98px) {
+    .auth-visual {
+        min-height: 260px;
+        padding: 2rem;
+    }
+
+    .auth-form-panel {
+        padding: 2rem 1.5rem;
+    }
+}
+
 @media (max-width: 767.98px) {
     .hero-section {
         min-height: 420px;
