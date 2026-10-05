@@ -22,6 +22,8 @@ def sha256(path):
 
 
 def make_bundle(directory, env):
+    if env['BUILD_RESULT'] == 'SUCCESS' and env.get('IMAGE_BUILT') != 'true':
+        raise RuntimeError('Successful build has no image marker; refusing a metadata-only backup.')
     # Explicit fields only: never dump the environment or container credentials.
     record = {
         'job': env['JOB_NAME'],

@@ -60,6 +60,12 @@ class BuildBackupTests(unittest.TestCase):
                 backup.make_bundle(self.directory, self.env)
         self.assertFalse((self.directory / 'SHA256SUMS').exists())
 
+    def test_success_without_image_marker_cannot_publish_metadata_only(self):
+        self.env['IMAGE_BUILT'] = 'false'
+        with self.assertRaisesRegex(RuntimeError, 'Successful build has no image marker'):
+            backup.make_bundle(self.directory, self.env)
+        self.assertEqual(list(self.directory.iterdir()), [])
+
     def test_jobs_with_same_slug_have_different_directories(self):
         first, _ = backup.destination_paths(self.env)
         self.env['JOB_NAME'] = 'Project Y-main'
