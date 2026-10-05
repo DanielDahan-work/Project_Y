@@ -1,3 +1,5 @@
+def imageBuilt = false
+
 pipeline {
     agent any
 
@@ -10,7 +12,6 @@ pipeline {
         NAS_HOST = '10.50.2.10'
         NAS_USER = 'ubuntu'
         NAS_BACKUP_ROOT = '/data/share/project-y-builds'
-        IMAGE_BUILT = 'false'
     }
 
     stages {
@@ -40,7 +41,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t "$BUILD_IMAGE" -t project-y:latest .'
-                script { env.IMAGE_BUILT = 'true' }
+                script { imageBuilt = true }
             }
         }
 
@@ -83,7 +84,7 @@ pipeline {
                         file(credentialsId: 'project-y-nas-known-hosts', variable: 'NAS_KNOWN_HOSTS')
                     ]) {
                         sshagent(credentials: ['project-y-nas-backup']) {
-                            withEnv(["BUILD_RESULT=${resultBeforeBackup}"]) {
+                            withEnv(["BUILD_RESULT=${resultBeforeBackup}", "IMAGE_BUILT=${imageBuilt}"]) {
                                 sh 'python3 scripts/backup_build.py'
                             }
                         }
