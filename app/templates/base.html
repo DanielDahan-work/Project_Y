@@ -14,7 +14,7 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css', v='20261001-2') }}">
+          href="{{ url_for('static', filename='css/style.css', v='20261005-1') }}">
 
 </head>
 
@@ -93,30 +93,48 @@
 
 </nav>
 
-<div class="container mt-5">
+<main class="container mt-5 page-content">
 
     {% block content %}
     {% endblock %}
 
-</div>
+</main>
 
-<footer class="bg-dark text-white mt-5 py-4">
+<footer class="bg-dark text-white mt-5 py-4 site-footer">
 
-    <div class="container text-center">
+    <div class="container footer-layout">
+
+        <section class="footer-weather" aria-label="Jerusalem weather"
+                 data-weather data-latitude="31.7683" data-longitude="35.2137">
+            <p class="footer-label">Jerusalem weather</p>
+            <p class="footer-value" data-weather-status role="status">Loading weather…</p>
+            <a class="footer-source" href="https://open-meteo.com/">Weather by Open-Meteo</a>
+        </section>
+
+        <div class="footer-brand text-center">
 
         <p class="mb-1">
             🚀 DevOps Portfolio
         </p>
 
-        <small class="text-secondary">
+        <small class="footer-muted">
             Built with Flask • Bootstrap • Python
         </small>
+
+        </div>
+
+        <section class="footer-clock" aria-label="Israel time">
+            <p class="footer-label">Israel time</p>
+            <time class="footer-value" data-clock data-timezone="Asia/Jerusalem">--:--:--</time>
+            <p class="footer-muted" data-clock-date></p>
+        </section>
 
     </div>
 
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/footer.js', v='20261005-1') }}" defer></script>
 
 </body>
 

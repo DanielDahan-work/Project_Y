@@ -1,5 +1,12 @@
 body {
     background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.page-content {
+    flex: 1;
 }
 
 body.app-surface {
@@ -157,4 +164,55 @@ body.app-surface {
 
 footer {
     margin-top: 80px;
+}
+
+.footer-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.footer-weather {
+    text-align: left;
+}
+
+.footer-clock {
+    text-align: right;
+}
+
+.footer-label,
+.footer-muted,
+.footer-source {
+    font-size: 0.8rem;
+    color: #c3cbd3;
+}
+
+.footer-label,
+.footer-muted {
+    margin: 0;
+}
+
+.footer-value {
+    display: block;
+    margin: 0.25rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.footer-source:hover {
+    color: #fff;
+}
+
+@media (max-width: 767.98px) {
+    .footer-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 1.25rem 0.75rem;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
 }
