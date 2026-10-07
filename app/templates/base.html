@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <meta name="referrer" content="no-referrer">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -94,6 +95,9 @@
 </nav>
 
 <main class="container mt-5 page-content">
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <div class="alert alert-{{ category }}" role="status">{{ message }}</div>
+    {% endfor %}
 
     {% block content %}
     {% endblock %}

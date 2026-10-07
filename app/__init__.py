@@ -12,14 +12,22 @@ login_manager = LoginManager()
 @login_manager.user_loader
 def load_user(user_id):
     from app.models.user import User
-    return User.query.get(int(user_id))
+    try:
+        user = db.session.get(User, int(user_id))
+    except (TypeError, ValueError):
+        return None
+    if user and user.email_verification_required and not user.email_verified:
+        return None
+    return user
 
 
-def create_app():
+def create_app(test_config=None):
 
     app = Flask(__name__)
 
     app.config.from_object(Config)
+    if test_config:
+        app.config.update(test_config)
 
     db.init_app(app)
 
@@ -29,5 +37,8 @@ def create_app():
     from app.routes import register_blueprints
 
     register_blueprints(app)
+
+    from app.email_migration import migrate_email_verification
+    app.cli.add_command(migrate_email_verification)
 
     return app

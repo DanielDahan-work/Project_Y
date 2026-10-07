@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm mx-auto p-4" style="max-width: 560px">
+    <h1 class="h3">Resend verification email</h1>
+    <p>Enter your registration email and password. You can request an email once per minute.</p>
+    <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <label for="email" class="form-label">Email</label>
+        <input id="email" class="form-control mb-3" type="email" name="email" autocomplete="email" required>
+        <label for="password" class="form-label">Password</label>
+        <input id="password" class="form-control mb-3" type="password" name="password" autocomplete="current-password" required>
+        <button type="submit" class="btn btn-primary">Send verification email</button>
+    </form>
+</div>
+{% endblock %}
