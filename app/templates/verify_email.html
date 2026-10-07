@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm mx-auto p-4" style="max-width: 560px">
+    {% if invalid %}
+    <h1 class="h3">This link is invalid or has expired</h1>
+    <a href="{{ url_for('auth.resend_verification') }}">Request a new verification email</a>
+    {% else %}
+    <h1 class="h3">Confirm your email</h1>
+    <p>Confirm to activate your Project Y account.</p>
+    <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="btn btn-primary" type="submit">Confirm email</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

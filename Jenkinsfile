@@ -35,6 +35,7 @@ pipeline {
         stage('Validate Flask') {
             steps {
                 sh './venv/bin/python -m py_compile run.py'
+                sh './venv/bin/python -m unittest discover -s tests -v'
             }
         }
 
@@ -52,9 +53,26 @@ pipeline {
                         credentialsId: 'project-y-db',
                         usernameVariable: 'DB_USER',
                         passwordVariable: 'DB_PASSWORD'
-                    )
+                    ),
+                    string(credentialsId: 'project-y-brevo-api-key', variable: 'BREVO_API_KEY'),
+                    string(credentialsId: 'project-y-secret-key', variable: 'SECRET_KEY')
                 ]) {
                     sh '''
+                        set -eu
+                        set +x
+                        test -n "$BREVO_API_KEY"
+                        test "${#SECRET_KEY}" -ge 32
+                        export DB_HOST=10.50.2.10 DB_PORT=5432 DB_NAME=project_y
+                        export EMAIL_SENDER=noreply@project-x.ink
+                        export PUBLIC_BASE_URL=https://project-y.project-x.ink
+                        export SESSION_COOKIE_SECURE=true
+
+                        # Migrate before stopping the running site. A migration failure
+                        # leaves the old container running; old code ignores added columns.
+                        docker run --rm \
+                            -e DB_HOST -e DB_PORT -e DB_NAME -e DB_USER -e DB_PASSWORD \
+                            "$BUILD_IMAGE" flask --app run migrate-email-verification
+
                         docker stop project-y || true
                         docker rm project-y || true
 
@@ -62,11 +80,9 @@ pipeline {
                             --restart unless-stopped \
                             --name project-y \
                             -p 5000:5000 \
-                            -e DB_HOST=10.50.2.10 \
-                            -e DB_PORT=5432 \
-                            -e DB_NAME=project_y \
-                            -e DB_USER="$DB_USER" \
-                            -e DB_PASSWORD="$DB_PASSWORD" \
+                            -e DB_HOST -e DB_PORT -e DB_NAME -e DB_USER -e DB_PASSWORD \
+                            -e BREVO_API_KEY -e SECRET_KEY \
+                            -e EMAIL_SENDER -e PUBLIC_BASE_URL -e SESSION_COOKIE_SECURE \
                             -e AWS_REGION=us-east-1 \
                             "$BUILD_IMAGE"
                     '''

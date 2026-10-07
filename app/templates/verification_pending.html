@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm mx-auto p-4" style="max-width: 560px">
+    <h1 class="h3">Verify your email</h1>
+    {% if delivery_failed %}
+    <p>Your account is saved, but we could not send the verification email. Please wait one minute and try again.</p>
+    {% else %}
+    <p>Please open the verification email and confirm your email address before signing in. The link expires in one hour.</p>
+    <p>Check your spam folder if you cannot find the message.</p>
+    {% endif %}
+    <a href="{{ url_for('auth.resend_verification') }}">Request another verification email</a>
+</div>
+{% endblock %}
