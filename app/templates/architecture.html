@@ -1,28 +1,72 @@
 {% extends "base.html" %}
-
 {% block body_class %}app-surface{% endblock %}
-
 {% block content %}
+<div class="architecture-library">
+    <header class="mb-4">
+        <p class="text-primary fw-semibold mb-2">ARCHITECTURE &amp; DOCUMENTATION</p>
+        <h1 class="mb-3">Project {{ project }}{% if project == 'X' %} Architecture{% else %} Documentation{% endif %}</h1>
+        {% if project == 'X' %}
+        <p class="text-muted">Explore the AWS infrastructure behind Project X and download its architecture documentation.</p>
+        {% else %}
+        <p class="text-muted">Explore the architecture and operations of the Project Y Flask application, with documentation by Daniel Dahan.</p>
+        {% endif %}
+    </header>
 
-<div class="container">
-
-    <h1 class="text-center mb-4">
-        Project X Architecture
-    </h1>
-
-    <div class="card shadow">
-
+    {% if project == 'X' %}
+    <section class="card border-0 shadow-sm mb-5" aria-label="Project X architecture diagram">
         <div class="card-body text-center">
-
-            <img
-                src="{{ url_for('static', filename='images/project_x_architecture.png') }}"
-                class="img-fluid rounded"
-                alt="Project X Architecture">
-
+            <a href="{{ url_for('static', filename='images/project_x_architecture.png') }}" target="_blank" rel="noopener">
+                <img src="{{ url_for('static', filename='images/project_x_architecture.png') }}"
+                     class="img-fluid rounded" alt="Project X AWS private NAS architecture">
+            </a>
+            <p class="text-muted small mt-3 mb-0">Select the diagram to open it at full size.</p>
         </div>
+    </section>
+    {% else %}
+    <section class="card border-0 shadow-sm mb-5">
+        <div class="card-body p-4">
+            <h2 class="h4">Architecture and operations</h2>
+            <p>The dedicated Project Y document covers the application, infrastructure, CI/CD pipeline and recovery procedures.</p>
+            <p class="mb-0 text-muted">The shared V5 document connects Project Y to the wider Project X infrastructure.</p>
+        </div>
+    </section>
+    {% endif %}
 
-    </div>
-
+    <section aria-labelledby="documentsHeading">
+        <div class="d-flex flex-wrap justify-content-between align-items-baseline gap-2 mb-3">
+            <h2 id="documentsHeading" class="h3 mb-0">Project {{ project }} documents</h2>
+            <span class="text-muted">{{ documents | length }} files</span>
+        </div>
+        <p class="text-muted mb-4">Download the original files, including previous documentation versions.</p>
+        <div class="row g-3">
+            {% for document in documents %}
+            <div class="col-md-6 {% if project == 'X' %}col-xl-4{% endif %}">
+                <article class="card border-0 shadow-sm h-100 document-card">
+                    <div class="card-body p-4 d-flex flex-column">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <i class="bi {% if document.format == 'Word' %}bi-file-earmark-word{% else %}bi-file-earmark-image{% endif %} text-primary fs-3" aria-hidden="true"></i>
+                            <span class="badge text-bg-light">{{ document.version }}</span>
+                            <span class="badge text-bg-light">{{ document.format }}</span>
+                            {% if document.shared %}<span class="badge text-bg-primary">Shared</span>{% endif %}
+                        </div>
+                        <h3 class="h5">{{ document.title }}</h3>
+                        {% if document.format == 'PNG' %}
+                        <img class="img-fluid rounded border mb-3" loading="lazy"
+                             src="{{ url_for('static', filename='documents/' + document.filename) }}"
+                             alt="Project X and Project Y AWS architecture diagram version 2">
+                        {% endif %}
+                        <p class="small text-muted document-filename">{{ document.filename }}</p>
+                        <a class="btn btn-outline-primary mt-auto align-self-start"
+                           href="{{ url_for('static', filename='documents/' + document.filename) }}"
+                           download="{{ document.filename }}"
+                           aria-label="Download {{ document.filename }}">
+                            <i class="bi bi-download me-2" aria-hidden="true"></i>Download {{ document.format }}
+                        </a>
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
 </div>
-
 {% endblock %}

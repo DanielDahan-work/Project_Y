@@ -15,7 +15,7 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css', v='20261005-1') }}">
+          href="{{ url_for('static', filename='css/style.css', v='20261008-1') }}">
 
 </head>
 
@@ -50,8 +50,18 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/architecture">Architecture</a>
+                <li class="nav-item dropdown">
+                    <button class="nav-link dropdown-toggle {% if request.blueprint == 'architecture' %}active{% endif %}"
+                            type="button" id="architectureMenu" data-bs-toggle="dropdown"
+                            aria-expanded="false">Architecture</button>
+                    <ul class="dropdown-menu" aria-labelledby="architectureMenu">
+                        <li><a class="dropdown-item {% if request.endpoint == 'architecture.architecture' %}active{% endif %}"
+                               {% if request.endpoint == 'architecture.architecture' %}aria-current="page"{% endif %}
+                               href="/architecture">Project-X</a></li>
+                        <li><a class="dropdown-item {% if request.endpoint == 'architecture.project_y' %}active{% endif %}"
+                               {% if request.endpoint == 'architecture.project_y' %}aria-current="page"{% endif %}
+                               href="{{ url_for('architecture.project_y') }}">Project-Y</a></li>
+                    </ul>
                 </li>
 
                 <li class="nav-item">
