@@ -205,6 +205,10 @@ footer {
     color: #fff;
 }
 
+.document-filename {
+    overflow-wrap: anywhere;
+}
+
 @media (max-width: 767.98px) {
     .footer-layout {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
