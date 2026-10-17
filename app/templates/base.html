@@ -72,6 +72,12 @@
                     <a class="nav-link" href="/dashboard">Dashboard</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link {% if request.blueprint == 'pesh' %}active{% endif %}"
+                       {% if request.blueprint == 'pesh' %}aria-current="page"{% endif %}
+                       href="{{ url_for('pesh.pesh') }}">PESH</a>
+                </li>
+
             </ul>
 
            {% if current_user.is_authenticated %}
