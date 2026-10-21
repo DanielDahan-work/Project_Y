@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-xl-6">
+        <div class="bg-white rounded-4 shadow-sm p-4 p-md-5">
+            <h1 class="h3 mb-4">My profile</h1>
+            <div class="d-flex align-items-center gap-3 mb-4">
+                {% if profile_image_url %}
+                <img class="profile-avatar" src="{{ profile_image_url }}" alt="Your profile image">
+                {% else %}
+                <span class="profile-avatar avatar-placeholder" aria-label="Default profile image"><i class="bi bi-person-fill" aria-hidden="true"></i></span>
+                {% endif %}
+                <div class="profile-details">
+                    <h2 class="h5 mb-1">{{ current_user.username }}</h2>
+                    <p class="text-secondary mb-0">{{ current_user.email }}</p>
+                </div>
+            </div>
+            {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+            <form class="mb-4" action="{{ url_for('profile.update_username') }}" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <label for="profileUsername" class="form-label fw-semibold">Username</label>
+                <input class="form-control" id="profileUsername" name="username" type="text"
+                       value="{{ current_user.username }}" maxlength="80" required
+                       autocomplete="username" aria-describedby="usernameHelp">
+                <p id="usernameHelp" class="form-text">This is also the name you use to sign in.</p>
+                <button class="btn btn-primary" type="submit">Save username</button>
+            </form>
+            <hr class="mb-4">
+            {% if storage_enabled %}
+            <form action="{{ url_for('profile.profile') }}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <label for="profileImage" class="form-label fw-semibold">Profile image</label>
+                <input class="form-control" id="profileImage" name="image" type="file"
+                       accept="image/jpeg,image/png" required aria-describedby="imageHelp">
+                <p id="imageHelp" class="form-text mb-3">Choose a JPEG or PNG up to 2 MB. Images are resized to fit 512 × 512 pixels.</p>
+                <button class="btn btn-primary" type="submit">Save image</button>
+            </form>
+            {% if current_user.profile_image_key %}
+            <form class="mt-3" action="{{ url_for('profile.remove_image') }}" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-outline-danger" type="submit">Remove image</button>
+            </form>
+            {% endif %}
+            {% else %}
+            <p class="text-secondary">Profile image uploads are temporarily unavailable.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

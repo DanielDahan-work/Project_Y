@@ -209,6 +209,13 @@ footer {
     overflow-wrap: anywhere;
 }
 
+.profile-link { display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+.profile-link:hover { text-decoration: underline; }
+.navbar-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+.profile-avatar { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.avatar-placeholder { display: inline-flex; align-items: center; justify-content: center; background: #e9eef5; color: #49576a; font-size: 2.5rem; }
+.profile-details { min-width: 0; overflow-wrap: anywhere; }
+
 @media (max-width: 767.98px) {
     .footer-layout {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);

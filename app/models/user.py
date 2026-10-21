@@ -17,6 +17,7 @@ class User(db.Model, UserMixin):
     # Legacy users retain access without claiming that their email was verified.
     email_verification_required = db.Column(db.Boolean, nullable=False, default=True, server_default=db.true())
     verification_last_sent_at = db.Column(db.DateTime, nullable=True)
+    profile_image_key = db.Column(db.String(255), nullable=True)
     created_at = db.Column(
         db.DateTime,
         default=datetime.utcnow,
