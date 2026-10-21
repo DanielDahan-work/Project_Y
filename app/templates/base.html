@@ -72,17 +72,16 @@
                     <a class="nav-link" href="/dashboard">Dashboard</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link {% if request.blueprint == 'pesh' %}active{% endif %}"
-                       {% if request.blueprint == 'pesh' %}aria-current="page"{% endif %}
-                       href="{{ url_for('pesh.pesh') }}">PESH</a>
-                </li>
-
             </ul>
 
            {% if current_user.is_authenticated %}
 
-    <a class="navbar-text text-white me-3 profile-link" href="{{ url_for('profile.profile') }}" aria-label="My profile: {{ current_user.username }}">
+    <div class="d-flex flex-wrap align-items-center gap-3">
+    <a class="btn btn-outline-light {% if request.blueprint == 'tickets' %}active{% endif %}"
+       {% if request.blueprint == 'tickets' %}aria-current="page"{% endif %}
+       href="{{ url_for('tickets.new_ticket') }}">Open a Ticket</a>
+
+    <a class="navbar-text text-white profile-link" href="{{ url_for('profile.profile') }}" aria-label="My profile: {{ current_user.username }}">
         {% if profile_image_url %}
         <img class="navbar-avatar" src="{{ profile_image_url }}" alt="">
         {% else %}
@@ -95,6 +94,7 @@
         <i class="bi bi-box-arrow-right me-1"></i>
         Logout
     </a>
+    </div>
 
 {% else %}
 
