@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% from "_ticket_badges.html" import ticket_badges %}
+
+{% block content %}
+<section class="mx-auto" style="max-width: 900px" aria-labelledby="ticketHeading">
+    <a class="d-inline-block mb-3" href="{{ url_for('tickets.my_tickets') }}">&larr; My Tickets</a>
+    <article class="bg-white rounded-4 shadow-sm p-4 p-md-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 mb-3">
+            <p class="text-secondary mb-0">Ticket #{{ ticket.id }}</p>
+            {{ ticket_badges(ticket) }}
+        </div>
+        <h1 id="ticketHeading" class="h3 text-break">{{ ticket.subject }}</h1>
+        <p class="text-secondary small mb-4">Opened {{ ticket.created_at | ticket_time_utc }}</p>
+        <h2 class="h6">Description</h2>
+        <div class="text-break" style="white-space: pre-wrap">{{ ticket.description }}</div>
+    </article>
+</section>
+{% endblock %}
