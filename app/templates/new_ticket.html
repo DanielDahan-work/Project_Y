@@ -3,43 +3,48 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-lg-8 col-xl-7">
-        <section class="bg-white rounded-4 shadow-sm p-4 p-md-5" aria-labelledby="ticketHeading">
+        <section class="bg-white rounded-4 shadow-sm p-4 p-md-5"
+                 aria-labelledby="ticketHeading">
             <h1 id="ticketHeading" class="h3 mb-2">Open a Ticket</h1>
             <p class="text-secondary mb-4">Tell us what you need help with.</p>
 
-            <div class="alert alert-info" id="ticketAvailability" role="status">
-                Ticket submission is not available yet. You can explore the form below.
-            </div>
-
-            <form action="{{ url_for('tickets.new_ticket') }}" method="post" aria-describedby="ticketAvailability">
+            <form action="{{ url_for('tickets.new_ticket') }}" method="post">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
                 <div class="mb-3">
                     <label for="ticketSubject" class="form-label fw-semibold">Subject</label>
-                    <input class="form-control" id="ticketSubject" name="subject" type="text"
-                           maxlength="160" required aria-describedby="subjectHelp">
-                    <div id="subjectHelp" class="form-text">A short summary of the issue, up to 160 characters.</div>
+                    <input class="form-control" id="ticketSubject" name="subject"
+                           type="text" maxlength="160" required
+                           aria-describedby="subjectHelp"
+                           value="{{ request.form.get('subject', '') }}">
+                    <div id="subjectHelp" class="form-text">
+                        A short summary of the issue, up to 160 characters.
+                    </div>
                 </div>
 
                 <div class="mb-3">
                     <label for="ticketDescription" class="form-label fw-semibold">Description</label>
                     <textarea class="form-control" id="ticketDescription" name="description"
-                              rows="6" maxlength="5000" required aria-describedby="descriptionHelp"></textarea>
-                    <div id="descriptionHelp" class="form-text">Describe the issue and any steps that help explain it. Up to 5,000 characters.</div>
+                              rows="6" maxlength="5000" required
+                              aria-describedby="descriptionHelp">{{ request.form.get('description', '') }}</textarea>
+                    <div id="descriptionHelp" class="form-text">
+                        Describe the issue and any steps that help explain it. Up to 5,000 characters.
+                    </div>
                 </div>
 
                 <div class="mb-4">
                     <label for="ticketPriority" class="form-label fw-semibold">Priority</label>
                     <select class="form-select" id="ticketPriority" name="priority" required>
-                        <option value="low">Low</option>
-                        <option value="normal" selected>Normal</option>
-                        <option value="high">High</option>
+                        <option value="low" {% if request.form.get('priority', 'normal') == 'low' %}selected{% endif %}>Low</option>
+                        <option value="normal" {% if request.form.get('priority', 'normal') == 'normal' %}selected{% endif %}>Normal</option>
+                        <option value="high" {% if request.form.get('priority', 'normal') == 'high' %}selected{% endif %}>High</option>
                     </select>
                 </div>
 
                 <div class="d-flex flex-wrap align-items-center gap-3">
-                    <button class="btn btn-primary" type="submit" disabled aria-describedby="ticketAvailability">Submit ticket</button>
-                    <a class="btn btn-outline-secondary" href="{{ url_for('home.home') }}">Back to home</a>
+                    <button class="btn btn-primary" type="submit">Submit ticket</button>
+                    <a class="btn btn-outline-secondary"
+                       href="{{ url_for('home.home') }}">Back to home</a>
                 </div>
             </form>
         </section>
