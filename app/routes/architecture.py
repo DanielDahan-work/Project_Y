@@ -22,7 +22,8 @@ PROJECT_X_DOCUMENTS = [
 
 PROJECT_Y_DOCUMENTS = [
     {"filename": "Project_Y_Architecture_and_Operations_Documentation_V1.docx",
-     "title": "Project Y Architecture and Operations", "version": "V1", "format": "Word"},
+     "title": "Project Y Architecture and Operations", "version": "V1", "format": "Word",
+     "updated": "2026-10-21"},
     SHARED_DOCUMENT,
 ]
 
