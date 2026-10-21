@@ -1,0 +1,6 @@
+{% macro ticket_badges(ticket) %}
+<div class="d-flex flex-wrap gap-2">
+    <span class="badge {{ {'open': 'text-bg-primary', 'in_progress': 'text-bg-warning', 'resolved': 'text-bg-success'}.get(ticket.status, 'text-bg-secondary') }}">{{ {'open': 'Open', 'in_progress': 'In progress', 'resolved': 'Resolved'}.get(ticket.status, ticket.status) }}</span>
+    <span class="badge {{ {'low': 'text-bg-light', 'normal': 'text-bg-secondary', 'high': 'text-bg-danger'}.get(ticket.priority, 'text-bg-secondary') }}">{{ ticket.priority | capitalize }} priority</span>
+</div>
+{% endmacro %}

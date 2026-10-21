@@ -77,8 +77,12 @@
            {% if current_user.is_authenticated %}
 
     <div class="d-flex flex-wrap align-items-center gap-3">
-    <a class="btn btn-outline-light {% if request.blueprint == 'tickets' %}active{% endif %}"
-       {% if request.blueprint == 'tickets' %}aria-current="page"{% endif %}
+    <a class="btn btn-outline-light {% if request.endpoint in ['tickets.my_tickets', 'tickets.ticket_detail'] %}active{% endif %}"
+       {% if request.endpoint in ['tickets.my_tickets', 'tickets.ticket_detail'] %}aria-current="page"{% endif %}
+       href="{{ url_for('tickets.my_tickets') }}">My Tickets</a>
+
+    <a class="btn btn-outline-light {% if request.endpoint == 'tickets.new_ticket' %}active{% endif %}"
+       {% if request.endpoint == 'tickets.new_ticket' %}aria-current="page"{% endif %}
        href="{{ url_for('tickets.new_ticket') }}">Open a Ticket</a>
 
     <a class="navbar-text text-white profile-link" href="{{ url_for('profile.profile') }}" aria-label="My profile: {{ current_user.username }}">

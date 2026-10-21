@@ -1,3 +1,5 @@
+from datetime import timezone
+
 from flask import (
     Blueprint, render_template, request,
     redirect, url_for, flash
@@ -55,3 +57,36 @@ def new_ticket():
 
     flash(f"Ticket #{ticket_id} was opened successfully.", "success")
     return redirect(url_for("tickets.new_ticket"))
+
+
+@tickets_bp.app_template_filter("ticket_time_utc")
+def ticket_time_utc(value):
+    # SQLite test timestamps are naive; PostgreSQL timestamps carry a timezone.
+    if value.tzinfo is None:
+        value = value.replace(tzinfo=timezone.utc)
+    return value.astimezone(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+
+@tickets_bp.route("/tickets")
+@login_required
+def my_tickets():
+    pagination = db.paginate(
+        db.select(Ticket)
+        .where(Ticket.user_id == current_user.id)
+        .order_by(Ticket.created_at.desc(), Ticket.id.desc()),
+        per_page=20,
+        max_per_page=20,
+    )
+    return render_template("my_tickets.html", pagination=pagination)
+
+
+@tickets_bp.route("/tickets/<int:ticket_id>")
+@login_required
+def ticket_detail(ticket_id):
+    # Apply ownership in the query: missing and other users' tickets both return 404.
+    ticket = db.first_or_404(
+        db.select(Ticket).where(
+            Ticket.id == ticket_id, Ticket.user_id == current_user.id
+        )
+    )
+    return render_template("ticket_detail.html", ticket=ticket)
