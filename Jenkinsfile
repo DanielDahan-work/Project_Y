@@ -73,6 +73,10 @@ pipeline {
                             -e DB_HOST -e DB_PORT -e DB_NAME -e DB_USER -e DB_PASSWORD \
                             "$BUILD_IMAGE" flask --app run migrate-email-verification
 
+                        docker run --rm \
+                            -e DB_HOST -e DB_PORT -e DB_NAME -e DB_USER -e DB_PASSWORD \
+                            "$BUILD_IMAGE" flask --app run migrate-profile-images
+
                         docker stop project-y || true
                         docker rm project-y || true
 
@@ -84,6 +88,8 @@ pipeline {
                             -e BREVO_API_KEY -e SECRET_KEY \
                             -e EMAIL_SENDER -e PUBLIC_BASE_URL -e SESSION_COOKIE_SECURE \
                             -e AWS_REGION=us-east-1 \
+                            -e PROFILE_IMAGES_BUCKET=project-y-profile-images-daniel-081809265825 \
+                            -e PROFILE_IMAGES_REGION=us-east-1 \
                             "$BUILD_IMAGE"
                     '''
                 }

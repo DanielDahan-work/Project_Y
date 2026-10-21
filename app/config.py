@@ -13,6 +13,11 @@ class Config:
     SESSION_COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "false").lower() == "true"
 
     AWS_REGION = os.getenv("AWS_REGION", "eu-central-1")
+    PROFILE_IMAGES_BUCKET = os.getenv("PROFILE_IMAGES_BUCKET", "")
+    PROFILE_IMAGES_REGION = os.getenv("PROFILE_IMAGES_REGION", "us-east-1")
+    PROFILE_IMAGE_MAX_BYTES = 2 * 1024 * 1024
+    PROFILE_IMAGE_URL_SECONDS = 900
+    MAX_CONTENT_LENGTH = 3 * 1024 * 1024
 
     DB_HOST = os.getenv("DB_HOST", "postgres")
     DB_PORT = os.getenv("DB_PORT", "5432")

@@ -4,6 +4,7 @@ import unittest
 from uuid import uuid4
 
 from sqlalchemy import create_engine, text
+from sqlalchemy.exc import IntegrityError
 
 from app import create_app, db
 from app.models.user import User
@@ -41,8 +42,9 @@ class PostgreSQLMigrationTests(unittest.TestCase):
         self.admin_engine.dispose()
 
     def migrate(self):
-        result = self.app.test_cli_runner().invoke(args=["migrate-email-verification"])
-        self.assertEqual(result.exit_code, 0, result.output + repr(result.exception))
+        for command in ("migrate-email-verification", "migrate-profile-images"):
+            result = self.app.test_cli_runner().invoke(args=[command])
+            self.assertEqual(result.exit_code, 0, result.output + repr(result.exception))
 
     def test_migration_preserves_legacy_users_sets_new_defaults_and_is_repeatable(self):
         with db.engine.connect() as connection:
@@ -54,6 +56,7 @@ class PostgreSQLMigrationTests(unittest.TestCase):
         legacy = db.session.get(User, 1)
         self.assertFalse(legacy.email_verification_required)
         self.assertFalse(legacy.email_verified)
+        self.assertIsNone(legacy.profile_image_key)
         legacy.set_password("password")
         db.session.commit()
         client = self.app.test_client()
@@ -69,6 +72,7 @@ class PostgreSQLMigrationTests(unittest.TestCase):
         self.assertTrue(new.email_verification_required)
         self.assertFalse(new.email_verified)
         new.email_verified = True
+        new.profile_image_key = f"avatars/{new.id}/existing.png"
         db.session.commit()
         self.migrate()
         db.session.expire_all()
@@ -76,3 +80,25 @@ class PostgreSQLMigrationTests(unittest.TestCase):
         self.assertFalse(legacy.email_verified)
         self.assertTrue(new.email_verification_required)
         self.assertTrue(new.email_verified)
+        self.assertEqual(new.profile_image_key, f"avatars/{new.id}/existing.png")
+
+    def test_database_prevents_case_insensitive_username_collisions(self):
+        self.migrate()
+        with self.assertRaises(IntegrityError):
+            with db.engine.begin() as connection:
+                connection.execute(text("""INSERT INTO users (username, email, password_hash)
+                    VALUES ('LEGACY', 'another@example.com', 'hash')"""))
+
+    def test_duplicate_legacy_names_stop_profile_migration_without_changing_users(self):
+        with db.engine.begin() as connection:
+            connection.execute(text("""INSERT INTO users (username, email, password_hash)
+                VALUES ('LEGACY', 'another@example.com', 'hash')"""))
+        result = self.app.test_cli_runner().invoke(args=["migrate-profile-images"])
+        self.assertNotEqual(result.exit_code, 0)
+        self.assertIn("duplicate usernames", result.output)
+        with db.engine.connect() as connection:
+            self.assertEqual(connection.execute(text("SELECT count(*) FROM users")).scalar_one(), 2)
+            count = connection.execute(text("""SELECT count(*) FROM information_schema.columns
+                WHERE table_schema = current_schema() AND table_name = 'users'
+                AND column_name = 'profile_image_key'""")).scalar_one()
+            self.assertEqual(count, 0)

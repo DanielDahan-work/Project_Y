@@ -40,5 +40,7 @@ def create_app(test_config=None):
 
     from app.email_migration import migrate_email_verification
     app.cli.add_command(migrate_email_verification)
+    from app.profile_migration import migrate_profile_images
+    app.cli.add_command(migrate_profile_images)
 
     return app
