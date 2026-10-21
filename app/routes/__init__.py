@@ -4,6 +4,7 @@ from app.routes.servers import servers_bp
 from app.routes.architecture import architecture_bp
 from app.routes.dashboard import dashboard_bp
 from app.routes.profile import profile_bp
+from app.routes.pesh import pesh_bp
 
 
 def register_blueprints(app):
@@ -13,3 +14,4 @@ def register_blueprints(app):
     app.register_blueprint(architecture_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(profile_bp)
+    app.register_blueprint(pesh_bp)
